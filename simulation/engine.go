@@ -18,3 +18,9 @@ func initializeTickLoop() {
 		fmt.Print("simloop running")
 	}
 }
+
+func stepSimulation(queuedCommands []Command, worldState WorldState) {
+	for _, command := range queuedCommands {
+		command.Apply(&worldState)
+	}
+}
