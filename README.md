@@ -1,19 +1,15 @@
-# README
+# OpenRCS - Open-Source Rail Control Simulator
+## Project Background
+OpenRCS is a free, open-source rail signalling simulator, that aims to have the following features:
+- Interlocking and timetable logic
+- Support for multiple signalling systems, including the US, UK, and German systems
+- Easy-to-edit timetables, maps, and game data
+- Provide an enjoyable and easy cross-platform user experience
 
-## About
+**OpenRCS is licensed under GPLv3.**
 
-This is the official Wails Vue-TS template.
-
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
-
-## Live Development
-
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
-
-## Building
-
-To build a redistributable, production mode package, use `wails build`.
+## Contributors
+OpenRCS is developed in Go and Wails, which connects the simulator runtime to a WebKit UI provided through Wails. General guiding principles for contributors include:
+- Composition over inheritance
+- Single source of truth
+- Keep it simple, limit abstractions if possible
