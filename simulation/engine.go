@@ -1,26 +1,15 @@
 package simulation
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
-func RunSimulation() {
-	go initializeTickLoop()
+func (engine *SimulationEngine) step(commands []Command) {
+	for _, command := range commands {
+		fmt.Printf("command: %v\n", command)
+		command.Apply(&engine.state)
+	}
+	fmt.Println("Stepped")
 }
 
-func initializeTickLoop() {
-	ticker := time.NewTicker(50 * time.Millisecond)
-	defer ticker.Stop()
-
-	for range ticker.C {
-		time.Sleep(50 * time.Millisecond)
-		fmt.Print("simloop running")
-	}
-}
-
-func stepSimulation(queuedCommands []Command, worldState WorldState) {
-	for _, command := range queuedCommands {
-		command.Apply(&worldState)
-	}
+type SimulationEngine struct {
+	state WorldState
 }
