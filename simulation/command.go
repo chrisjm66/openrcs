@@ -6,5 +6,6 @@ type Command interface {
 
 type UpdateTrackCircuitCommand struct {
 	Command
-	trackCircuitId string
+	trackCircuitId    string
+	trackCircuitState TrackCircuitState
 }

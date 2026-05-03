@@ -7,7 +7,6 @@ func (engine *SimulationEngine) step(commands []Command) {
 		fmt.Printf("command: %v\n", command)
 		command.Apply(&engine.state)
 	}
-	fmt.Println("Stepped")
 }
 
 type SimulationEngine struct {

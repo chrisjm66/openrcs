@@ -1,7 +1,6 @@
 package simulation
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -29,7 +28,6 @@ func (runtime *SimulationRuntime) initializeTickLoop() {
 		commands := runtime.drainCommands()
 		runtime.engine.step(commands)
 		time.Sleep(50 * time.Millisecond)
-		fmt.Print("simloop running")
 	}
 }
 

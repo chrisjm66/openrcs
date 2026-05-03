@@ -13,3 +13,6 @@ OpenRCS is developed in Go and Wails, which connects the simulator runtime to a 
 - Composition over inheritance
 - Single source of truth
 - Keep it simple, limit abstractions if possible
+
+
+Note to linux users on webkit2gtk-4.1: use -tags `webkit2_41` in all commands

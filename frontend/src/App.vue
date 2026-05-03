@@ -4,6 +4,10 @@ import HelloWorld from './components/HelloWorld.vue'</script>
 <template>
   <img id="logo" alt="Wails logo" src="./assets/images/logo-universal.png"/>
   <HelloWorld/>
+
+  <button v-on:click="">
+    Occupy TC1  
+  </button>
 </template>
 
 <style>
