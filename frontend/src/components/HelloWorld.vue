@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import {reactive} from 'vue'
 import {Greet} from '../../wailsjs/go/main/App'
+import {SubmitCommand} from '../../wailsjs/go/simulation/SimulationRuntime'
+import { simulation } from '../../wailsjs/go/models'
 
 const data = reactive({
   name: "",
@@ -13,6 +15,10 @@ function greet() {
   })
 }
 
+const commandRequest: simulation.CommandRequest  = {
+  commandType: "occupy_track_circuit",
+  targetId: "1",
+}
 </script>
 
 <template>
@@ -21,6 +27,11 @@ function greet() {
     <div id="input" class="input-box">
       <input id="name" v-model="data.name" autocomplete="off" class="input" type="text"/>
       <button class="btn" @click="greet">Greet</button>
+
+      <button @click="() => SubmitCommand(commandRequest)">
+          Occupy TC1  
+      </button>
+
     </div>
   </main>
 </template>

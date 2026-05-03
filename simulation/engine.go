@@ -2,10 +2,9 @@ package simulation
 
 import "fmt"
 
-func (engine *SimulationEngine) step(commands []Command) {
+func (engine *SimulationEngine) step(commands []CommandRequest) {
 	for _, command := range commands {
 		fmt.Printf("command: %v\n", command)
-		command.Apply(&engine.state)
 	}
 }
 

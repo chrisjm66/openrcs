@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"openrcs/simulation"
 )
 
 // App struct
@@ -21,21 +20,6 @@ func NewApp() *App {
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 
-	layout := simulation.CreateRailwayLayout(
-		map[string]simulation.Signal{
-			"1": simulation.CreateSignal([]string{"1"}),
-			"2": simulation.CreateSignal([]string{"2"}),
-			"3": simulation.CreateSignal([]string{"3"}),
-		},
-		map[string]simulation.TrackCircuit{
-			"1": simulation.CreateDefaultTrackCircuit(),
-			"2": simulation.CreateDefaultTrackCircuit(),
-			"3": simulation.CreateDefaultTrackCircuit(),
-		},
-	)
-
-	runtime := simulation.CreateSimRuntime(&layout)
-	runtime.StartSimulation()
 }
 
 // Greet returns a greeting for the given name

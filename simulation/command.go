@@ -1,11 +1,6 @@
 package simulation
 
-type Command interface {
-	Apply(world *WorldState) error
-}
-
-type UpdateTrackCircuitCommand struct {
-	Command
-	trackCircuitId    string
-	trackCircuitState TrackCircuitState
+type CommandRequest struct {
+	CommandType string `json:"commandType"`
+	TargetID    string `json:"targetId"`
 }

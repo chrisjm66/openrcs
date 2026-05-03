@@ -1,6 +1,7 @@
 package simulation
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -11,7 +12,7 @@ func CreateSimRuntime(layout *RailwayLayout) *SimulationRuntime {
 
 	return &SimulationRuntime{
 		engine:   &engine,
-		commands: make(chan Command),
+		commands: make(chan CommandRequest),
 		tickRate: 50 * time.Millisecond,
 	}
 }
@@ -31,7 +32,8 @@ func (runtime *SimulationRuntime) initializeTickLoop() {
 	}
 }
 
-func (runtime *SimulationRuntime) SubmitCommand(command Command) bool {
+func (runtime *SimulationRuntime) SubmitCommand(command CommandRequest) bool {
+	fmt.Println("command submitted")
 	select {
 	case runtime.commands <- command:
 		return true
@@ -40,8 +42,8 @@ func (runtime *SimulationRuntime) SubmitCommand(command Command) bool {
 	}
 }
 
-func (runtime *SimulationRuntime) drainCommands() []Command {
-	var commands []Command
+func (runtime *SimulationRuntime) drainCommands() []CommandRequest {
+	var commands []CommandRequest
 	for {
 		select {
 		case command := <-runtime.commands:
@@ -54,6 +56,6 @@ func (runtime *SimulationRuntime) drainCommands() []Command {
 
 type SimulationRuntime struct {
 	engine   *SimulationEngine
-	commands chan Command
+	commands chan CommandRequest
 	tickRate time.Duration
 }
