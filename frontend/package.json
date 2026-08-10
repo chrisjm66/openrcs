@@ -1,25 +1,45 @@
 {
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build:dev": "vite build --minify false --mode development",
-    "build": "vite build --mode production",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
-  },
-  "dependencies": {
-    "@wailsio/runtime": "latest"
-  },
-  "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^7.0.0",
-    "@tsconfig/svelte": "^5.0.8",
-    "svelte": "^5.46.4",
-    "svelte-check": "^4.4.8",
-    "tslib": "^2.6.2",
-    "typescript": "^5.2.2",
-    "vite": "^8.0.5"
-  }
+	"name": "frontend",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build:dev": "vite build --minify false --mode development",
+		"build": "vite build --mode production",
+		"preview": "vite preview",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"format": "prettier --write .",
+		"lint": "prettier --check . && eslint ."
+	},
+	"dependencies": {
+		"@tailwindcss/vite": "^4.3.3",
+		"@wailsio/runtime": "latest",
+		"tailwindcss": "^4.3.3"
+	},
+	"devDependencies": {
+		"@eslint/css": "^1.4.0",
+		"@eslint/js": "^10.0.1",
+		"@eslint/json": "^2.0.1",
+		"@eslint/markdown": "^8.0.3",
+		"@sveltejs/vite-plugin-svelte": "^7.0.0",
+		"@tsconfig/svelte": "^5.0.8",
+		"@types/node": "^24",
+		"eslint": "^10.4.1",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-svelte": "^3.19.0",
+		"globals": "^17.6.0",
+		"prettier": "^3.8.3",
+		"prettier-plugin-svelte": "^4.1.0",
+		"prettier-plugin-tailwindcss": "^0.8.0",
+		"svelte": "^5.46.4",
+		"svelte-check": "^4.4.8",
+		"tslib": "^2.6.2",
+		"typescript": "^5.2.2",
+		"typescript-eslint": "^8.60.1",
+		"vite": "^8.0.5"
+	},
+	"allowScripts": {
+		"fsevents@2.3.3": true
+	}
 }
