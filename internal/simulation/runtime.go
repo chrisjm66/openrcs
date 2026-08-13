@@ -3,16 +3,19 @@ package simulation
 import (
 	"fmt"
 	"time"
+
+	"github.com/chrisjm66/openrcs/internal/command"
+	"github.com/chrisjm66/openrcs/internal/layout"
 )
 
-func CreateSimRuntime(layout *RailwayLayout) *SimulationRuntime {
+func CreateSimRuntime(layout *layout.RailwayLayout) *SimulationRuntime {
 	engine := SimulationEngine{
 		state: *createInitalWorldState(layout),
 	}
 
 	return &SimulationRuntime{
 		engine:   &engine,
-		commands: make(chan CommandRequest),
+		commands: make(chan command.CommandRequest),
 		tickRate: 50 * time.Millisecond,
 	}
 }
@@ -32,7 +35,7 @@ func (runtime *SimulationRuntime) initializeTickLoop() {
 	}
 }
 
-func (runtime *SimulationRuntime) SubmitCommand(command CommandRequest) bool {
+func (runtime *SimulationRuntime) SubmitCommand(command command.CommandRequest) bool {
 	fmt.Println("command submitted")
 	select {
 	case runtime.commands <- command:
@@ -42,8 +45,8 @@ func (runtime *SimulationRuntime) SubmitCommand(command CommandRequest) bool {
 	}
 }
 
-func (runtime *SimulationRuntime) drainCommands() []CommandRequest {
-	var commands []CommandRequest
+func (runtime *SimulationRuntime) drainCommands() []command.CommandRequest {
+	var commands []command.CommandRequest
 	for {
 		select {
 		case command := <-runtime.commands:
@@ -56,6 +59,6 @@ func (runtime *SimulationRuntime) drainCommands() []CommandRequest {
 
 type SimulationRuntime struct {
 	engine   *SimulationEngine
-	commands chan CommandRequest
+	commands chan command.CommandRequest
 	tickRate time.Duration
 }

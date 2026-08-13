@@ -1,4 +1,4 @@
-module changeme
+module github.com/chrisjm66/openrcs
 
 go 1.25.0
 

@@ -1,4 +1,4 @@
-package simulation
+package layout
 
 import "maps"
 
@@ -12,6 +12,6 @@ func CreateRailwayLayout(signals map[string]Signal, trackCircuits map[string]Tra
 }
 
 type RailwayLayout struct {
-	signals       map[string]Signal
-	trackCircuits map[string]TrackCircuit
+	Signals       map[string]Signal
+	TrackCircuits map[string]TrackCircuit
 }

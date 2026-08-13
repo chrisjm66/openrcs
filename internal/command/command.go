@@ -1,4 +1,4 @@
-package simulation
+package command
 
 type CommandRequest struct {
 	CommandType string `json:"commandType"`
