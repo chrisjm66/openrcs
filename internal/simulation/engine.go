@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/chrisjm66/openrcs/internal/command"
+	"github.com/chrisjm66/openrcs/internal/state"
 )
 
 func (engine *SimulationEngine) step(commands []command.CommandRequest) {
@@ -13,5 +14,5 @@ func (engine *SimulationEngine) step(commands []command.CommandRequest) {
 }
 
 type SimulationEngine struct {
-	state WorldState
+	state state.WorldState
 }

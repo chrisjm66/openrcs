@@ -5,6 +5,8 @@ func CreateDefaultTrackCircuit() TrackCircuit {
 }
 
 type TrackCircuit struct {
+	StartPosition TrackPosition
+	EndPosition   TrackPosition
 }
 
 type TrackCircuitId string

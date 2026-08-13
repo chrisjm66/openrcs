@@ -1,8 +1,8 @@
-package simulation
+package state
 
 import "github.com/chrisjm66/openrcs/internal/layout"
 
-func createInitalWorldState(railwayLayout *layout.RailwayLayout) *WorldState {
+func CreateInitalWorldState(railwayLayout *layout.RailwayLayout) *WorldState {
 	signalState := make(map[layout.SignalId]SignalState)
 	trackCircuitState := make(map[layout.TrackCircuitId]TrackCircuitState)
 
@@ -30,22 +30,5 @@ func createInitalWorldState(railwayLayout *layout.RailwayLayout) *WorldState {
 type WorldState struct {
 	signalState       map[layout.SignalId]SignalState
 	trackCircuitState map[layout.TrackCircuitId]TrackCircuitState
-}
-
-type SignalState struct {
-	aspect SignalAspect
-}
-
-type SignalAspect int
-
-const (
-	Red SignalAspect = iota
-	Yellow
-	DoubleYellow
-	Green
-)
-
-type TrackCircuitState struct {
-	occupied bool
-	failed   bool
+	switchState map[layout.SwitchId]SwitchState
 }

@@ -1,13 +1,8 @@
 package layout
 
-func CreateSignal(protectsTrackCircuits []string) Signal {
-	return Signal{
-		protects: protectsTrackCircuits,
-	}
-}
-
 type Signal struct {
-	protects []string
+	Protects []TrackCircuitId
+	Position TrackPosition
 }
 
 type SignalId string

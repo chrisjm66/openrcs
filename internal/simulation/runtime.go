@@ -6,11 +6,12 @@ import (
 
 	"github.com/chrisjm66/openrcs/internal/command"
 	"github.com/chrisjm66/openrcs/internal/layout"
+	"github.com/chrisjm66/openrcs/internal/state"
 )
 
 func CreateSimRuntime(layout *layout.RailwayLayout) *SimulationRuntime {
 	engine := SimulationEngine{
-		state: *createInitalWorldState(layout),
+		state: *state.CreateInitalWorldState(layout),
 	}
 
 	return &SimulationRuntime{
