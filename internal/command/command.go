@@ -1,6 +1,13 @@
 package command
 
 type CommandRequest struct {
-	CommandType string `json:"commandType"`
-	TargetID    string `json:"targetId"`
+	CommandType CommandType `json:"commandType"`
+	TargetID    string      `json:"targetId"`
 }
+
+type CommandType int
+
+const (
+	RequestRoute CommandType = iota
+	ResetRoute
+)

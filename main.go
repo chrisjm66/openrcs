@@ -38,6 +38,7 @@ func main() {
 		Description: "Open Source Railroad Signalling Simulator",
 		Services: []application.Service{
 			application.NewService(&GreetService{}),
+			application.NewService(&SimulationService{}),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),

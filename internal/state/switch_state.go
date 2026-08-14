@@ -2,7 +2,7 @@ package state
 
 import "github.com/chrisjm66/openrcs/internal/layout"
 
-func (state *WorldState) SwitchDirection (switchId layout.SwitchId) SwitchDirection {
+func (state *WorldState) SwitchDirection(switchId layout.SwitchId) SwitchDirection {
 	return state.switchState[switchId].switchDirection
 }
 
@@ -13,7 +13,7 @@ func (state *WorldState) SetSwitchDirection(switchId layout.SwitchId, direction 
 }
 
 type SwitchState struct {
-	switchDirection SwitchDirection	
+	switchDirection SwitchDirection
 }
 
 type SwitchDirection int

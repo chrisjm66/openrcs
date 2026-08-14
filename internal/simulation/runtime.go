@@ -1,7 +1,9 @@
 package simulation
 
 import (
+	"context"
 	"fmt"
+	"log/slog"
 	"time"
 
 	"github.com/chrisjm66/openrcs/internal/command"
@@ -9,15 +11,18 @@ import (
 	"github.com/chrisjm66/openrcs/internal/state"
 )
 
-func CreateSimRuntime(layout *layout.RailwayLayout) *SimulationRuntime {
+func createSimRuntime(layout *layout.RailwayLayout, ctx context.Context) *SimulationRuntime {
 	engine := SimulationEngine{
-		state: *state.CreateInitalWorldState(layout),
+		state: state.WorldState{},
 	}
+
+	engine.state.InitializeState(layout)
 
 	return &SimulationRuntime{
 		engine:   &engine,
 		commands: make(chan command.CommandRequest),
 		tickRate: 50 * time.Millisecond,
+		ctx:      ctx,
 	}
 }
 
@@ -30,9 +35,15 @@ func (runtime *SimulationRuntime) initializeTickLoop() {
 	defer ticker.Stop()
 
 	for range ticker.C {
-		commands := runtime.drainCommands()
-		runtime.engine.step(commands)
-		time.Sleep(50 * time.Millisecond)
+		select {
+		case <-runtime.ctx.Done():
+			slog.Debug("Stopping runtime - stop message received from program")
+			break
+		default:
+			commands := runtime.drainCommands()
+			runtime.engine.step(commands)
+			time.Sleep(50 * time.Millisecond)
+		}
 	}
 }
 
@@ -62,4 +73,5 @@ type SimulationRuntime struct {
 	engine   *SimulationEngine
 	commands chan command.CommandRequest
 	tickRate time.Duration
+	ctx      context.Context
 }
