@@ -15,3 +15,7 @@ func (s *SimulationService) NewRuntime(layout layout.RailwayLayout) {
 	s.runtime = createSimRuntime(&layout, s.ctx)
 
 }
+
+func (s *SimulationService) GetLayouts() []layout.RailwayLayoutId {
+	return layout.GetAvailableLayouts()
+}

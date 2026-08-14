@@ -1,6 +1,6 @@
 package layout
 
-func CreateLayout() *RailwayLayout {
+func CreateTestLayout() *RailwayLayout {
 	// This is a very simple layout. Imagine a simple junction, where one track splits into two. The mainline (tracks 1, 2) are protected by a single track circuit, while the other line also has its own track circuit. One signal protects the one circuit, and another signal protects the other. There is a junction which connects the two tracks with the common route being track 1, the normal route being track 2, and the reverse being track 3.
 
 	tracks := map[TrackId]*Track{
@@ -66,10 +66,10 @@ func CreateLayout() *RailwayLayout {
 	}
 
 	layout := &RailwayLayout{
-		Tracks:        tracks,
-		TrackCircuits: trackCircuits,
-		Signals:       signals,
-		Switches:      switches,
+		Tracks:          tracks,
+		TrackCircuits:   trackCircuits,
+		Signals:         signals,
+		Switches:        switches,
 	}
 
 	return layout

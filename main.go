@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/chrisjm66/openrcs/internal/simulation"
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
@@ -37,8 +38,7 @@ func main() {
 		Name:        "OpenRCS",
 		Description: "Open Source Railroad Signalling Simulator",
 		Services: []application.Service{
-			application.NewService(&GreetService{}),
-			application.NewService(&SimulationService{}),
+			application.NewService(&simulation.SimulationService{}),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),

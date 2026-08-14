@@ -6,4 +6,5 @@ interface UiState {
 	currentPage: Pages;
 }
 
-export type Pages = 'home' | 'simulation' | 'editor' | 'settings' | 'selectSimulation' | 'scenarioEditor';
+export type Pages =
+	'home' | 'simulation' | 'editor' | 'settings' | 'selectSimulation' | 'scenarioEditor';

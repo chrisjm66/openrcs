@@ -1,19 +1,30 @@
 <script lang="ts">
 	import './app.css';
+	import HomeContainer from './home/HomeContainer.svelte';
 	import Homepage from './home/Homepage.svelte';
+	import SelectSimulation from './home/SelectSimulation.svelte';
+	import Simulation from './simulation/Simulation.svelte';
 	import { uiState } from './state/ui.svelte';
 
 	let { currentPage } = $derived(uiState);
 </script>
 
 {#if currentPage == 'home'}
-	<Homepage />
+	<HomeContainer>
+		<Homepage />
+	</HomeContainer>
 {:else if currentPage == 'settings'}
-	<h1>settings</h1>
+	<HomeContainer>
+		<h1>settings here</h1>
+	</HomeContainer>
 {:else if currentPage == 'editor'}
 	<h1>editor</h1>
 {:else if currentPage == 'simulation'}
-	<h1>sim</h1>
+	<Simulation />
 {:else if currentPage == 'selectSimulation'}
-	<h1>balls</h1>
+	<HomeContainer>
+		<SelectSimulation />
+	</HomeContainer>
+{:else}
+	<h1>no page</h1>
 {/if}

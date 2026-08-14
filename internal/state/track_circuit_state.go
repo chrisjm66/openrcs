@@ -7,7 +7,7 @@ func (state *WorldState) TrackCircuitOccupied(trackCircuitId layout.TrackCircuit
 }
 
 func (state *WorldState) OccupyTrackCircuit(trackCircuitId layout.TrackCircuitId) {
-	newState := trackCircuitState[trackCircuitId]
+	newState := state.trackCircuitState[trackCircuitId]
 	newState.occupied = true
 	state.trackCircuitState[trackCircuitId] = newState
 }
