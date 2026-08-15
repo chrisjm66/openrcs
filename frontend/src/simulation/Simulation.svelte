@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { simulationState } from '../state/simulation.svelte';
 	import Footer from './Footer.svelte';
 	import SimulationCanvas from './SimulationCanvas.svelte';
 	import TopBar from './TopBar.svelte';
@@ -12,7 +13,7 @@
 		</div>
 
 		<div>
-			<SimulationCanvas />
+			<SimulationCanvas layout={simulationState.layout} state={simulationState.worldState} />
 		</div>
 
 		<div class="absolute bottom-0">
