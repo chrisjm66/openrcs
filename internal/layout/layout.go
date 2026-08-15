@@ -5,10 +5,10 @@ import (
 )
 
 func GetAvailableLayouts() []RailwayLayoutId {
-	layouts := []RailwayLayoutId{} 
-	
+	layouts := []RailwayLayoutId{}
+
 	for id := range railwayLayouts() {
-		layouts = append(layouts, id)	
+		layouts = append(layouts, id)
 	}
 
 	return layouts
@@ -20,8 +20,8 @@ func GetLayout(railwayLayoutId RailwayLayoutId) (RailwayLayout, error) {
 	if !ok {
 		return RailwayLayout{}, errors.New("Simulation " + string(railwayLayoutId) + " not found")
 	}
-	
-	return *layout, nil	
+
+	return *layout, nil
 }
 
 func railwayLayouts() map[RailwayLayoutId]*RailwayLayout {
@@ -34,8 +34,8 @@ func railwayLayouts() map[RailwayLayoutId]*RailwayLayout {
 type RailwayLayoutId string
 
 type RailwayLayout struct {
-	Tracks          map[TrackId]*Track
-	Signals         map[SignalId]*Signal
-	TrackCircuits   map[TrackCircuitId]*TrackCircuit
-	Switches        map[SwitchId]*Switch
+	Tracks        map[TrackId]*Track
+	Signals       map[SignalId]*Signal
+	TrackCircuits map[TrackCircuitId]*TrackCircuit
+	Switches      map[SwitchId]*Switch
 }

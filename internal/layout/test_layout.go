@@ -66,10 +66,10 @@ func CreateTestLayout() *RailwayLayout {
 	}
 
 	layout := &RailwayLayout{
-		Tracks:          tracks,
-		TrackCircuits:   trackCircuits,
-		Signals:         signals,
-		Switches:        switches,
+		Tracks:        tracks,
+		TrackCircuits: trackCircuits,
+		Signals:       signals,
+		Switches:      switches,
 	}
 
 	return layout

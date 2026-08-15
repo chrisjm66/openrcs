@@ -13,7 +13,7 @@ export const simulationState = $state<SimulationState>({
 export async function loadSimulation(railwayLayoutId: RailwayLayoutId) {
 	await SimulationService.NewRuntime(railwayLayoutId);
 	simulationState.layout = await SimulationService.GetLayout();
-  console.log (simulationState.layout)
+	console.log(simulationState.layout);
 }
 
 interface SimulationState {

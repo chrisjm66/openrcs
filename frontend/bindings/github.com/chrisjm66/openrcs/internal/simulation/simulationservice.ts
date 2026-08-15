@@ -3,27 +3,27 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise } from '@wailsio/runtime';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as layout$0 from "../layout/models.js";
+import * as layout$0 from '../layout/models.js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import * as state$0 from "../state/models.js";
+import * as state$0 from '../state/models.js';
 
 export function GetLayout(): $CancellablePromise<layout$0.RailwayLayout> {
-    return $Call.ByID(2092464613);
+	return $Call.ByID(2092464613);
 }
 
 export function GetLayouts(): $CancellablePromise<layout$0.RailwayLayoutId[] | null> {
-    return $Call.ByID(3966199586);
+	return $Call.ByID(3966199586);
 }
 
 export function GetState(): $CancellablePromise<state$0.WorldState> {
-    return $Call.ByID(2570170480);
+	return $Call.ByID(2570170480);
 }
 
 export function NewRuntime(railwayLayoutId: layout$0.RailwayLayoutId): $CancellablePromise<void> {
-    return $Call.ByID(2890237135, railwayLayoutId);
+	return $Call.ByID(2890237135, railwayLayoutId);
 }

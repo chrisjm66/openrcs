@@ -38,7 +38,7 @@ func (s *SimulationService) GetLayouts() []layout.RailwayLayoutId {
 
 func (s *SimulationService) GetLayout() layout.RailwayLayout {
 	return s.runtime.engine.layout
-	}
+}
 
 func (s *SimulationService) GetState() state.WorldState {
 	return s.runtime.engine.state

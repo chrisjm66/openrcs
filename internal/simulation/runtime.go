@@ -13,7 +13,7 @@ import (
 
 func createSimRuntime(layout *layout.RailwayLayout, ctx context.Context) *SimulationRuntime {
 	engine := SimulationEngine{
-		state: state.WorldState{},
+		state:  state.WorldState{},
 		layout: *layout,
 	}
 

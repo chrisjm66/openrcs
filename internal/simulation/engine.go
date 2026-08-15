@@ -15,6 +15,6 @@ func (engine *SimulationEngine) step(commands []command.CommandRequest) {
 }
 
 type SimulationEngine struct {
-	state state.WorldState
+	state  state.WorldState
 	layout layout.RailwayLayout
 }
