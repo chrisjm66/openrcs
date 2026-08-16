@@ -1,24 +1,44 @@
 package layout
 
-type Track struct {
-	Length int
+type TrackNode struct {
+	Position Point
+	Type     NodeType
 }
 
-type TrackId string
+type TrackEdge struct {
+	From, To TrackNodeId
+	Geometry []Point
 
-type TrackPosition struct {
-	TrackId TrackId
-	Offset  int
+	Properties TrackProperties
+
+	AllowsToFrom, AllowsFromTo bool
 }
 
-type TrackEndpoint struct {
-	TrackId  TrackId
-	Endpoint TrackEnd
-}
-
-type TrackEnd int
+type NodeType string
 
 const (
-	Start TrackEnd = iota
-	End
+	NodeBoundary NodeType = "boundary"
+	NodeBuffer   NodeType = "buffer"   // Buffers/track ends
+	NodeSwitch   NodeType = "switch"   // Switches
+	NodeCrossing NodeType = "crossing" // Intersectings tracks
+
 )
+
+type TrackNodeId string
+
+type TrackEdgeId string
+
+type TrackProperties struct {
+	Name        string
+	SpeedLimit  float64
+	Electrified bool
+}
+
+type EdgeEnd struct {
+	NodeId TrackNodeId
+	EdgeId TrackEdgeId
+}
+
+type Point struct {
+	X, Y float64
+}

@@ -2,7 +2,7 @@ package command
 
 type CommandRequest struct {
 	CommandType CommandType `json:"commandType"`
-	TargetID    string      `json:"targetId"`
+	TargetId    string      `json:"targetId"`
 }
 
 type CommandType int

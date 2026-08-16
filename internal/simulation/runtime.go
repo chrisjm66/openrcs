@@ -7,17 +7,16 @@ import (
 	"time"
 
 	"github.com/chrisjm66/openrcs/internal/command"
-	"github.com/chrisjm66/openrcs/internal/layout"
 	"github.com/chrisjm66/openrcs/internal/state"
 )
 
-func createSimRuntime(layout *layout.RailwayLayout, ctx context.Context) *SimulationRuntime {
+func createSimRuntime(scenario *Scenario, ctx context.Context) *SimulationRuntime {
 	engine := SimulationEngine{
-		state:  state.WorldState{},
-		layout: *layout,
+		state:    &state.WorldState{},
+		scenario: scenario,
 	}
 
-	engine.state.InitializeState(layout)
+	engine.state.InitializeState(&scenario.Layout)
 
 	return &SimulationRuntime{
 		engine:   &engine,
@@ -28,10 +27,10 @@ func createSimRuntime(layout *layout.RailwayLayout, ctx context.Context) *Simula
 }
 
 func (runtime *SimulationRuntime) StartSimulation() {
-	go runtime.initializeTickLoop()
+	go runtime.runTickLoop()
 }
 
-func (runtime *SimulationRuntime) initializeTickLoop() {
+func (runtime *SimulationRuntime) runTickLoop() {
 	ticker := time.NewTicker(runtime.tickRate)
 	defer ticker.Stop()
 

@@ -3,3 +3,5 @@
 
 import * as SimulationService from './simulationservice.js';
 export { SimulationService };
+
+export type { Scenario, ScenarioId } from './models.js';

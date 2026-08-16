@@ -1,22 +1,27 @@
-import type {
-	RailwayLayout,
-	RailwayLayoutId
-} from '../../bindings/github.com/chrisjm66/openrcs/internal/layout';
 import type { WorldState } from '../../bindings/github.com/chrisjm66/openrcs/internal/state';
-import { SimulationService } from '../../bindings/github.com/chrisjm66/openrcs/internal/simulation';
+import {
+	SimulationService,
+	type Scenario,
+	type ScenarioId
+} from '../../bindings/github.com/chrisjm66/openrcs/internal/simulation';
 
 export const simulationState = $state<SimulationState>({
-	worldState: null,
-	layout: null
+	worldState: undefined,
+	scenario: undefined
 });
 
-export async function loadSimulation(railwayLayoutId: RailwayLayoutId) {
-	await SimulationService.NewRuntime(railwayLayoutId);
-	simulationState.layout = await SimulationService.GetLayout();
-	console.log(simulationState.layout);
+export async function loadSimulation(scenarioId: ScenarioId) {
+	const error = await SimulationService.NewRuntime(scenarioId as string);
+
+	if (error != null) {
+		console.log('Error: ' + error.message);
+	}
+
+	simulationState.scenario = await SimulationService.GetCurrentScenario();
+	console.log(simulationState.scenario?.Layout);
 }
 
 interface SimulationState {
-	worldState: WorldState | null;
-	layout: RailwayLayout | null;
+	worldState: WorldState | undefined;
+	scenario: Scenario | undefined;
 }

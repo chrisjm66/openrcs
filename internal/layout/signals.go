@@ -1,8 +1,8 @@
 package layout
 
 type Signal struct {
-	Protects []TrackCircuitId
-	Position TrackPosition
+	// Signals are placed at TrackNodes of boundary types only (two tracks connecting)
+	Approach EdgeEnd // Each signal is positioned at a node, so with an edge end we can use it to derive which direction the signal is facing in.
 }
 
 type SignalId string

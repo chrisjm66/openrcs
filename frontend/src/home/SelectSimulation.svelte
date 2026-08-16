@@ -3,12 +3,16 @@
 	import { SimulationService } from '../../bindings/github.com/chrisjm66/openrcs/internal/simulation';
 	import { Call } from '@wailsio/runtime';
 	import { loadSimulation } from '../state/simulation.svelte';
+	import type {
+		Scenario,
+		ScenarioId
+	} from '../../bindings/github.com/chrisjm66/openrcs/internal/simulation';
 
-	let selectableSimulations = $state<string[]>([]);
-	let selectedSimulation = $state<string>('');
+	let selectableScenarios = $state<Record<ScenarioId, Scenario | undefined>>();
+	let selectedSimulationId = $state<ScenarioId>('');
 
 	async function loadSimulations() {
-		selectableSimulations = (await SimulationService.GetLayouts()) ?? [];
+		selectableScenarios = (await SimulationService.GetScenarios()) ?? {};
 	}
 
 	loadSimulations();
@@ -17,17 +21,17 @@
 		uiState.currentPage = 'home';
 	}
 
-	function onClickSelectSimulation(simulation: string) {
-		selectedSimulation = simulation;
+	function onClickSelectSimulation(simulationId: string) {
+		selectedSimulationId = simulationId;
 	}
 
 	async function onClickStartSimulation() {
 		try {
-			await loadSimulation(selectedSimulation);
+			await loadSimulation(selectedSimulationId as string);
 			uiState.currentPage = 'simulation';
 		} catch (error: unknown) {
 			if (error instanceof Call.RuntimeError) {
-				console.log('Error: simulation not found: ' + selectedSimulation);
+				console.log(('Error: simulation not found: ' + selectedSimulationId) as string);
 			}
 		}
 	}
@@ -44,28 +48,32 @@
 		<h1 class="my-5 text-2xl">Select a Simulation</h1>
 
 		<div class="flex max-h-2/3 w-50 flex-col gap-y-2">
-			{#each selectableSimulations as simulation (simulation)}
-				<button
-					class="w-full rounded bg-primary p-2 text-primary-foreground transition-colors hover:bg-accent"
-					onclick={() => onClickSelectSimulation(simulation)}
-					value={simulation}
-				>
-					{simulation}
-				</button>
+			{#each Object.entries(selectableScenarios ?? {}) as [id, scenario] (id)}
+				{#if scenario}
+					<button
+						class="w-full rounded bg-primary p-2 text-primary-foreground transition-colors hover:bg-accent"
+						onclick={() => onClickSelectSimulation(id)}
+						value={id}
+					>
+						{scenario.Name}
+					</button>
+				{/if}
 			{/each}
 		</div>
 	</div>
 
-	{#if selectedSimulation != ''}
+	{#if selectedSimulationId != ''}
 		<div class="h-full w-1/2">
-			<h2 class="text-xl">{selectedSimulation}</h2>
-			<p>Description here</p>
+			{#if selectableScenarios && selectableScenarios[selectedSimulationId]}
+				<h2 class="text-xl">{selectableScenarios[selectedSimulationId]?.Name}</h2>
+				<p>{selectableScenarios[selectedSimulationId]?.Description}</p>
 
-			<button
-				onclick={() => onClickStartSimulation()}
-				class="transiton-colors absolute right-10 bottom-10 rounded bg-primary p-2 text-primary-foreground"
-				>Start Simulation</button
-			>
+				<button
+					onclick={() => onClickStartSimulation()}
+					class="transiton-colors absolute right-10 bottom-10 rounded bg-primary p-2 text-primary-foreground"
+					>Start Simulation</button
+				>
+			{/if}
 		</div>
 	{/if}
 </div>

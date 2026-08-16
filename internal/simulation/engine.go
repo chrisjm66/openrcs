@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/chrisjm66/openrcs/internal/command"
-	"github.com/chrisjm66/openrcs/internal/layout"
 	"github.com/chrisjm66/openrcs/internal/state"
 )
 
@@ -15,6 +14,6 @@ func (engine *SimulationEngine) step(commands []command.CommandRequest) {
 }
 
 type SimulationEngine struct {
-	state  state.WorldState
-	layout layout.RailwayLayout
+	state    *state.WorldState
+	scenario *Scenario
 }

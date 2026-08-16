@@ -2,9 +2,6 @@ package simulation
 
 import (
 	"context"
-	"errors"
-
-	"github.com/chrisjm66/openrcs/internal/layout"
 	"github.com/chrisjm66/openrcs/internal/service"
 	"github.com/chrisjm66/openrcs/internal/state"
 )
@@ -14,32 +11,36 @@ type SimulationService struct {
 	runtime *SimulationRuntime
 }
 
-func (s *SimulationService) NewRuntime(railwayLayoutId layout.RailwayLayoutId) error {
-	simLayout, err := layout.GetLayout(railwayLayoutId)
+func (s *SimulationService) NewRuntime(scenarioId ScenarioId) *service.ApiError {
+	scenario, ok := GetTestScenarios()[scenarioId]
 
-	if err != nil {
-		return &service.SimulationNotFoundError{
-			Simulation: railwayLayoutId,
+	if !ok {
+		return &service.ApiError{
+			Code:    service.LAYOUT_NOT_FOUND,
+			Message: "Scenario " + string(scenarioId) + " not found",
 		}
 	}
 
-	s.runtime = createSimRuntime(&simLayout, s.ctx)
+	s.runtime = createSimRuntime(&scenario, s.ctx)
 
 	if s.runtime == nil {
-		return errors.New("Runtime not loaded")
+		return &service.ApiError{
+			Code:    service.RUNTIME_NOT_FOUND,
+			Message: "Simulation runtime not found",
+		}
 	}
 
 	return nil
 }
 
-func (s *SimulationService) GetLayouts() []layout.RailwayLayoutId {
-	return layout.GetAvailableLayouts()
+func (s *SimulationService) GetCurrentScenario() Scenario {
+	return *s.runtime.engine.scenario
 }
 
-func (s *SimulationService) GetLayout() layout.RailwayLayout {
-	return s.runtime.engine.layout
+func (s *SimulationService) GetScenarios() map[ScenarioId]Scenario {
+	return GetTestScenarios()
 }
 
 func (s *SimulationService) GetState() state.WorldState {
-	return s.runtime.engine.state
+	return *s.runtime.engine.state
 }

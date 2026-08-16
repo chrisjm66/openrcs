@@ -1,8 +1,9 @@
 <script lang="ts">
 	import type { TrackCircuit } from '../../bindings/github.com/chrisjm66/openrcs/internal/layout';
+	import type { DiagramTrack } from '../../bindings/github.com/chrisjm66/openrcs/internal/signal_diagram';
 	import { simulationState } from '../state/simulation.svelte';
 
-	let layout = simulationState.layout;
+	let diagram = simulationState.scenario?.SignallingDiagram;
 
 	let canvas: HTMLCanvasElement;
 
@@ -22,6 +23,7 @@
 			context?.scale(dpr, dpr);
 		});
 	}
+
 	function subscribeToLayoutUpdates() {
 		$effect(() => {
 			const context = canvas.getContext('2d');
@@ -30,26 +32,26 @@
 				return;
 			}
 
-			if (!layout || !layout.TrackCircuits) {
+			if (!diagram || !diagram.Tracks) {
 				console.log('null');
 				return;
 			} else {
-				Object.entries(layout.TrackCircuits).forEach(([id, trackCircuit]) => {
-					const circuit = trackCircuit as TrackCircuit;
+				Object.entries(diagram.Tracks).forEach(([id, track]) => {
 					console.log(id);
-					if (circuit) {
-						console.log(circuit);
-						context.beginPath();
-						context.moveTo(100, 300);
-						context.lineTo(100, 300 + circuit.EndPosition.Offset);
-						context.lineWidth = 5;
-						context.strokeStyle = 'white';
-						context.stroke();
+					if (track && track.DiagramPositions) {
+						console.log(track);
 
-						context.beginPath();
-						context.fillStyle = 'red';
-						context.fillText(id, 400, 300 + circuit.EndPosition.Offset / 2);
-						context.stroke();
+						for (let i = 1; i < track.DiagramPositions.length; i++) {
+							const previousPosition = track.DiagramPositions[i - 1];
+							const currentPosition = track.DiagramPositions[i];
+							context.beginPath();
+							context.moveTo(previousPosition.X, previousPosition.Y);
+							context.lineTo(currentPosition.X, currentPosition.Y);
+							context.lineWidth = 5;
+							context.strokeStyle = 'darkgrey';
+							context.stroke();
+							// TODO perform state lookup to add headcode, color, etc.
+						}
 					} else {
 						console.log('circuit is null');
 					}

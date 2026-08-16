@@ -11,9 +11,14 @@ type TrainDef struct {
 	Braking      float64
 }
 
+type TrainPosition struct {
+	ReferenceEdge layout.EdgeEnd
+	Offset        float64
+}
+
 type TrainState struct {
 	headcode string
 	speed    float64
-	position layout.TrackPosition
+	position TrainPosition
 	length   float64
 }
