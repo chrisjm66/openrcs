@@ -72,6 +72,6 @@ func (runtime *SimulationRuntime) drainCommands() []command.CommandRequest {
 type SimulationRuntime struct {
 	engine   *SimulationEngine
 	commands chan command.CommandRequest
-	tickRate time.Duration
+	tickRate time.Duration 
 	ctx      context.Context
 }

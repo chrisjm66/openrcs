@@ -12,8 +12,8 @@
 			<TopBar />
 		</div>
 
-		<div>
-			<SimulationCanvas layout={simulationState.layout} state={simulationState.worldState} />
+		<div class="w-full h-full">
+			<SimulationCanvas diagram={simulationState.scenario?.signallingDiagram} />
 		</div>
 
 		<div class="absolute bottom-0">

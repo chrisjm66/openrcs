@@ -9,22 +9,24 @@
 	let { currentPage } = $derived(uiState);
 </script>
 
-{#if currentPage == 'home'}
-	<HomeContainer>
-		<Homepage />
-	</HomeContainer>
-{:else if currentPage == 'settings'}
-	<HomeContainer>
-		<h1>settings here</h1>
-	</HomeContainer>
-{:else if currentPage == 'editor'}
-	<h1>editor</h1>
-{:else if currentPage == 'simulation'}
-	<Simulation />
-{:else if currentPage == 'selectSimulation'}
-	<HomeContainer>
-		<SelectSimulation />
-	</HomeContainer>
-{:else}
-	<h1>no page</h1>
-{/if}
+<div class="scrollbar-none">
+	{#if currentPage == 'home'}
+		<HomeContainer>
+			<Homepage />
+		</HomeContainer>
+	{:else if currentPage == 'settings'}
+		<HomeContainer>
+			<h1>settings here</h1>
+		</HomeContainer>
+	{:else if currentPage == 'editor'}
+		<h1>editor</h1>
+	{:else if currentPage == 'simulation'}
+		<Simulation />
+	{:else if currentPage == 'selectSimulation'}
+		<HomeContainer>
+			<SelectSimulation />
+		</HomeContainer>
+	{:else}
+		<h1>no page</h1>
+	{/if}
+</div>

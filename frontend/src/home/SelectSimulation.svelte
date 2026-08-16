@@ -55,7 +55,7 @@
 						onclick={() => onClickSelectSimulation(id)}
 						value={id}
 					>
-						{scenario.Name}
+						{scenario.name}
 					</button>
 				{/if}
 			{/each}
@@ -65,8 +65,8 @@
 	{#if selectedSimulationId != ''}
 		<div class="h-full w-1/2">
 			{#if selectableScenarios && selectableScenarios[selectedSimulationId]}
-				<h2 class="text-xl">{selectableScenarios[selectedSimulationId]?.Name}</h2>
-				<p>{selectableScenarios[selectedSimulationId]?.Description}</p>
+				<h2 class="text-xl">{selectableScenarios[selectedSimulationId]?.name}</h2>
+				<p>{selectableScenarios[selectedSimulationId]?.description}</p>
 
 				<button
 					onclick={() => onClickStartSimulation()}

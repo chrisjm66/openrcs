@@ -1,14 +1,13 @@
 <script lang="ts">
-	import type { TrackCircuit } from '../../bindings/github.com/chrisjm66/openrcs/internal/layout';
-	import type { DiagramTrack } from '../../bindings/github.com/chrisjm66/openrcs/internal/signal_diagram';
-	import { simulationState } from '../state/simulation.svelte';
+	import type { SignalDiagram } from '../../bindings/github.com/chrisjm66/openrcs/internal/signal_diagram';
+	import type { WorldState } from '../../bindings/github.com/chrisjm66/openrcs/internal/state';
+	import { drawSignals, drawTracks } from '../lib/canvas';
 
-	let diagram = simulationState.scenario?.SignallingDiagram;
-
+	const { diagram }: { diagram: SignalDiagram | undefined } = $props();
 	let canvas: HTMLCanvasElement;
 
 	initializeCanvas();
-	subscribeToLayoutUpdates();
+	drawLayout();
 
 	function initializeCanvas() {
 		$effect(() => {
@@ -24,7 +23,7 @@
 		});
 	}
 
-	function subscribeToLayoutUpdates() {
+	function drawLayout() {
 		$effect(() => {
 			const context = canvas.getContext('2d');
 
@@ -32,33 +31,10 @@
 				return;
 			}
 
-			if (!diagram || !diagram.Tracks) {
-				console.log('null');
-				return;
-			} else {
-				Object.entries(diagram.Tracks).forEach(([id, track]) => {
-					console.log(id);
-					if (track && track.DiagramPositions) {
-						console.log(track);
-
-						for (let i = 1; i < track.DiagramPositions.length; i++) {
-							const previousPosition = track.DiagramPositions[i - 1];
-							const currentPosition = track.DiagramPositions[i];
-							context.beginPath();
-							context.moveTo(previousPosition.X, previousPosition.Y);
-							context.lineTo(currentPosition.X, currentPosition.Y);
-							context.lineWidth = 5;
-							context.strokeStyle = 'darkgrey';
-							context.stroke();
-							// TODO perform state lookup to add headcode, color, etc.
-						}
-					} else {
-						console.log('circuit is null');
-					}
-				});
-			}
-		});
+			drawTracks(diagram, context)	
+			drawSignals(diagram, context)
+		})
 	}
 </script>
 
-<canvas bind:this={canvas} class="h-full w-full bg-black"></canvas>
+<canvas bind:this={canvas} class="z-10 h-full w-full bg-black"></canvas>
