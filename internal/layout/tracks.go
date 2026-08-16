@@ -29,9 +29,9 @@ type TrackNodeId string
 type TrackEdgeId string
 
 type TrackProperties struct {
-	Name        string `json:"name"`
+	Name        string  `json:"name"`
 	SpeedLimit  float64 `json:"speedLimit"`
-	Electrified bool `json:"electrified"`
+	Electrified bool    `json:"electrified"`
 }
 
 type EdgeEnd struct {
