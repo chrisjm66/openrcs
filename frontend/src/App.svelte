@@ -9,7 +9,7 @@
 	let { currentPage } = $derived(uiState);
 </script>
 
-<div class="scrollbar-none">
+<div class="h-full w-full">
 	{#if currentPage == 'home'}
 		<HomeContainer>
 			<Homepage />
