@@ -18,7 +18,7 @@ export async function loadSimulation(scenarioId: ScenarioId) {
 	}
 
 	simulationState.scenario = await SimulationService.GetCurrentScenario();
-	console.log(simulationState.scenario?.layout);
+	console.log('ran')
 }
 
 interface SimulationState {

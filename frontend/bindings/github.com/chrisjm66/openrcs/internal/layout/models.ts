@@ -68,19 +68,19 @@ export interface TrackCircuit {
 export type TrackCircuitId = string;
 
 export interface TrackEdge {
-    "From": TrackNodeId;
-    "To": TrackNodeId;
-    "Geometry": Point[] | null;
-    "Properties": TrackProperties;
-    "AllowsToFrom": boolean;
-    "AllowsFromTo": boolean;
+    "from": TrackNodeId;
+    "to": TrackNodeId;
+    "geometry": Point[] | null;
+    "properties": TrackProperties;
+    "allowsToFrom": boolean;
+    "allowsFromTo": boolean;
 }
 
 export type TrackEdgeId = string;
 
 export interface TrackNode {
-    "Position": Point;
-    "Type": NodeType;
+    "position": Point;
+    "type": NodeType;
 }
 
 export type TrackNodeId = string;

@@ -1,0 +1,121 @@
+{
+	"id": "yourmom",
+	"name": "Test Scenario 1",
+	"description": "This is a test",
+	"railwayLayout": {
+		"trackNodes": {
+			"N1": {
+				"position": {
+					"x": 100,
+					"y": 100
+				},
+				"type": "buffer"
+			},
+			"N2": {
+				"position": {
+					"x": 400,
+					"y": 100
+				},
+				"type": "buffer"
+			},
+			"N3": {
+				"position": {
+					"x": 200,
+					"y": 300
+				},
+				"type": "boundary"
+			}
+		},
+		"trackEdges": {
+			"TE1": {
+				"from": "",
+				"to": "",
+				"geometry": [
+					{
+						"x": 150,
+						"y": 200
+					}
+				],
+				"properties": {
+					"name": "idk",
+					"speedLimit": 60,
+					"electrified": false
+				},
+				"allowsToFrom": false,
+				"allowsFromTo": false
+			},
+			"TE2": {
+				"from": "",
+				"to": "",
+				"geometry": [
+					{
+						"x": 150,
+						"y": 200
+					}
+				],
+				"properties": {
+					"name": "idk",
+					"speedLimit": 60,
+					"electrified": false
+				},
+				"allowsToFrom": false,
+				"allowsFromTo": false
+			}
+		},
+		"signals": {
+			"S001": {
+				"approach": {
+					"nodeId": "N1",
+					"edgeId": "E1"
+				}
+			}
+		},
+		"trackCircuits": {
+			"TC1": {
+				"edges": [
+					"TE1"
+				]
+			},
+			"TC2": {
+				"edges": [
+					"TE2"
+				]
+			}
+		},
+		"switches": null
+	},
+	"signallingDiagram": {
+		"tracks": [
+			{
+				"diagramPositions": [
+					{
+						"x": 100,
+						"y": 100
+					},
+					{
+						"x": 150,
+						"y": 100
+					},
+					{
+						"x": 1000,
+						"y": 150
+					}
+				],
+				"trackCircuits": [
+					"TC1"
+				]
+			}
+		],
+		"signals": [
+			{
+				"signalId": "S001",
+				"diagramPosition": {
+					"x": 100,
+					"y": 500
+				},
+				"orientation": 90
+			}
+		],
+		"switches": null
+	}
+}

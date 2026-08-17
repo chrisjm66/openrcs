@@ -1,6 +1,13 @@
 package simulation
 
 import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"log/slog"
+	"os"
+
 	"github.com/chrisjm66/openrcs/internal/layout"
 	signaldiagram "github.com/chrisjm66/openrcs/internal/signal_diagram"
 )
@@ -17,113 +24,34 @@ type Scenario struct {
 
 type ScenarioId string
 
-func GetTestScenarios() map[ScenarioId]Scenario {
-	return map[ScenarioId]Scenario{
-		ScenarioId("SC1"): {
-			Name:        "Test Scenario 1",
-			Description: "This is a test",
-			Layout: layout.RailwayLayout{
-				TrackNodes: map[layout.TrackNodeId]layout.TrackNode{
-					layout.TrackNodeId("N1"): {
-						Position: layout.Point{
-							X: 100,
-							Y: 100,
-						},
-						Type: layout.NodeBuffer,
-					},
-					layout.TrackNodeId("N3"): {
-						Position: layout.Point{
-							X: 200,
-							Y: 300,
-						},
-						Type: layout.NodeBoundary,
-					},
-					layout.TrackNodeId("N2"): {
-						Position: layout.Point{
-							X: 400,
-							Y: 100,
-						},
-						Type: layout.NodeBuffer,
-					},
-				},
-				TrackEdges: map[layout.TrackEdgeId]layout.TrackEdge{
-					layout.TrackEdgeId("TE1"): {
-						Properties: layout.TrackProperties{
-							Name:        "idk",
-							Electrified: false,
-							SpeedLimit:  60,
-						},
-						Geometry: []layout.Point{
-							{
-								X: 150,
-								Y: 200,
-							},
-						},
-					},
-					layout.TrackEdgeId("TE2"): {
-						Properties: layout.TrackProperties{
-							Name:        "idk",
-							Electrified: false,
-							SpeedLimit:  60,
-						},
-						Geometry: []layout.Point{
-							{
-								X: 150,
-								Y: 200,
-							},
-						},
-					},
-				},
-				TrackCircuits: map[layout.TrackCircuitId]layout.TrackCircuit{
-					layout.TrackCircuitId("TC1"): {
-						Edges: []layout.TrackEdgeId{layout.TrackEdgeId("TE1")},
-					},
-					layout.TrackCircuitId("TC2"): {
-						Edges: []layout.TrackEdgeId{layout.TrackEdgeId("TE2")},
-					},
-				},
-				Signals: map[layout.SignalId]layout.Signal{
-					layout.SignalId("S001"): {
-						Approach: layout.EdgeEnd{
-							NodeId: layout.TrackNodeId("N1"),
-							EdgeId: layout.TrackEdgeId("E1"),
-						},
-					},
-				},
-			},
-			SignallingDiagram: signaldiagram.SignalDiagram{
-				Tracks: []signaldiagram.DiagramTrack{
-					{
-						DiagramPositions: []signaldiagram.DiagramPosition{
-							{
-								X: 100,
-								Y: 100,
-							},
-							{
-								X: 150,
-								Y: 100,
-							},
-							{
-								X: 1000,
-								Y: 150,
-							},
-						},
-						TrackCircuits: []layout.TrackCircuitId{
-							"TC1",
-						},
-					},
-				},
-				Signals: []signaldiagram.DiagramSignal{
-					{
-						SignalId: "S001",
-						DiagramPosition: signaldiagram.DiagramPosition{
-							X: 100,
-							Y: 500,
-						},
-						Orientation: 90,
-					},
-				},
-			},
-		},
+func GetScenarios() ([]Scenario, error) {
+	entries, err := os.ReadDir("./scenarios")
+	scenarios := []Scenario{}
+
+	if err != nil {
+		return []Scenario{}, errors.New("Could not view scenarios directory")
 	}
+
+	for _, entry := range entries {
+		file, err := os.Open("./scenarios/" + entry.Name())
+
+		if err != nil {
+			slog.Error("Could not read file: Unable to open " + entry.Name())
+			continue
+		}
+
+		bytes, err := io.ReadAll(file)
+
+		if err != nil {
+			slog.Error("Could not read file: IO input failed")
+			continue
+		}
+
+		scenario := &Scenario{}
+		err = json.Unmarshal(bytes, scenario)
+		scenarios = append(scenarios, *scenario)
+		fmt.Print(scenarios)
+	}
+
+	return scenarios, nil
 }

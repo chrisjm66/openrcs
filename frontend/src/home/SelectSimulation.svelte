@@ -1,37 +1,37 @@
 <script lang="ts">
 	import { uiState } from '../state/ui.svelte';
-	import { SimulationService } from '../../bindings/github.com/chrisjm66/openrcs/internal/simulation';
 	import { Call } from '@wailsio/runtime';
 	import { loadSimulation } from '../state/simulation.svelte';
-	import type {
-		Scenario,
-		ScenarioId
-	} from '../../bindings/github.com/chrisjm66/openrcs/internal/simulation';
+	import { SimulationService, type Scenario } from '../../bindings/github.com/chrisjm66/openrcs/internal/simulation';
 
-	let selectableScenarios = $state<Record<ScenarioId, Scenario | undefined>>();
-	let selectedSimulationId = $state<ScenarioId>('');
+	let selectableScenarios = $state<Scenario[]>();
+	let selectedSimulationIndex = $state<number | undefined>(undefined);
+
+	loadSimulations()
 
 	async function loadSimulations() {
-		selectableScenarios = (await SimulationService.GetScenarios()) ?? {};
+		const scenarios = (await SimulationService.GetScenarios()) ?? {};
+		console.log(scenarios)
+		if (scenarios != null && scenarios[0] != null) {
+			selectableScenarios = scenarios[0]
+		}	
 	}
-
-	loadSimulations();
 
 	function onClickReturnToMenu() {
 		uiState.currentPage = 'home';
 	}
 
-	function onClickSelectSimulation(simulationId: string) {
-		selectedSimulationId = simulationId;
+	function onClickSelectSimulation(index: string) {
+		selectedSimulationIndex = Number(index);
 	}
 
-	async function onClickStartSimulation() {
+	async function onClickStartSimulation(scenario: Scenario) {
 		try {
-			await loadSimulation(selectedSimulationId as string);
+			await loadSimulation(scenario.id);
 			uiState.currentPage = 'simulation';
 		} catch (error: unknown) {
 			if (error instanceof Call.RuntimeError) {
-				console.log(('Error: simulation not found: ' + selectedSimulationId) as string);
+				console.log(('Error: simulation not found: ' + scenario.id) as string);
 			}
 		}
 	}
@@ -48,12 +48,12 @@
 		<h1 class="my-5 text-2xl">Select a Simulation</h1>
 
 		<div class="flex max-h-2/3 w-50 flex-col gap-y-2">
-			{#each Object.entries(selectableScenarios ?? {}) as [id, scenario] (id)}
+			{#each Object.entries(selectableScenarios ?? {}) as [index, scenario] (scenario.id)}
 				{#if scenario}
 					<button
 						class="w-full rounded bg-primary p-2 text-primary-foreground transition-colors hover:bg-accent"
-						onclick={() => onClickSelectSimulation(id)}
-						value={id}
+						onclick={() => onClickSelectSimulation(index)}
+						value={index}
 					>
 						{scenario.name}
 					</button>
@@ -62,14 +62,15 @@
 		</div>
 	</div>
 
-	{#if selectedSimulationId != ''}
+	{#if selectedSimulationIndex !== undefined}
 		<div class="h-full w-1/2">
-			{#if selectableScenarios && selectableScenarios[selectedSimulationId]}
-				<h2 class="text-xl">{selectableScenarios[selectedSimulationId]?.name}</h2>
-				<p>{selectableScenarios[selectedSimulationId]?.description}</p>
+			{#if selectableScenarios && selectedSimulationIndex !== undefined && selectableScenarios[selectedSimulationIndex]}
+				{@const selectedScenario = selectableScenarios[selectedSimulationIndex]}
+				<h2 class="text-xl">{selectedScenario?.name}</h2>
+				<p>{selectedScenario?.description}</p>
 
 				<button
-					onclick={() => onClickStartSimulation()}
+					onclick={() => onClickStartSimulation(selectedScenario)}
 					class="transiton-colors absolute right-10 bottom-10 rounded bg-primary p-2 text-primary-foreground"
 					>Start Simulation</button
 				>

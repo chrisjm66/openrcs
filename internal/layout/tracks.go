@@ -1,17 +1,19 @@
 package layout
 
 type TrackNode struct {
-	Position Point
-	Type     NodeType
+	Position Point    `json:"position"`
+	Type     NodeType `json:"type"`
 }
 
 type TrackEdge struct {
-	From, To TrackNodeId
-	Geometry []Point
+	From     TrackNodeId `json:"from"`
+	To       TrackNodeId `json:"to"`
+	Geometry []Point     `json:"geometry"`
 
-	Properties TrackProperties
+	Properties TrackProperties `json:"properties"`
 
-	AllowsToFrom, AllowsFromTo bool
+	AllowsToFrom bool `json:"allowsToFrom"`
+	AllowsFromTo bool `json:"allowsFromTo"`
 }
 
 type NodeType string

@@ -20,7 +20,7 @@ export function GetCurrentScenario(): $CancellablePromise<$models.Scenario> {
     return $Call.ByID(2522019930);
 }
 
-export function GetScenarios(): $CancellablePromise<{ [_ in $models.ScenarioId]?: $models.Scenario } | null> {
+export function GetScenarios(): $CancellablePromise<[$models.Scenario[] | null, service$0.ApiError]> {
     return $Call.ByID(3174298170);
 }
 

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import type { SignalDiagram } from '../../bindings/github.com/chrisjm66/openrcs/internal/signal_diagram';
-	import type { WorldState } from '../../bindings/github.com/chrisjm66/openrcs/internal/state';
+	import type { SignalDiagram } from '../../bindings/github.com/chrisjm66/openrcs/internal/signal_diagram/models';
 	import { drawSignals, drawTracks } from '../lib/canvas';
 
 	const { diagram }: { diagram: SignalDiagram | undefined } = $props();
