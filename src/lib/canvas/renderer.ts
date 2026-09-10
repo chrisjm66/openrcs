@@ -83,10 +83,14 @@ export function drawSignals(diagram: SignalDiagram | undefined, context: CanvasR
 			const x = signal.position.x!;
 			const y = signal.position.y!;
 
+			// Main Signal Lamp
 			context.beginPath();
 			context.arc(signal.position.x!, signal.position.y!, SIGNAL_RADIUS, 0, Math.PI * 2);
 			context.fillStyle = 'yellow';
 			context.fill();
+
+			// Arm
+			
 
 			hitTargets.push({
 				type: 'signal',
