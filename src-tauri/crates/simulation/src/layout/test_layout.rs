@@ -6,166 +6,232 @@ use crate::layout::{
     switch::{Switch, SwitchId},
     track::{
         EdgeEnd, Point, TrackEdge, TrackEdgeId, TrackNode, TrackNodeId, TrackProperties,
-        TrackType::{Boundary, Buffer},
+        TrackType::{Boundary, Switch as SwitchNode},
     },
-    track_circuit::{self, TrackCircuit, TrackCircuitId},
+    track_circuit::{TrackCircuit, TrackCircuitId},
 };
 
+/// A compact passing-loop layout used by the UI and simulation fixtures.
+///
+/// The main line and loop join at two points, allowing the scenario to exercise
+/// route selection, occupancy colouring, signal aspects, and switch symbols.
 pub fn make_test_layout() -> SimulationLayout {
-    let track_nodes = create_track_nodes();
-    let signals = create_signals();
-    let track_circuits = create_track_circuits();
-    let switches = create_switches();
-    let track_edges = create_track_edges();
-
     SimulationLayout {
-        track_circuits: track_circuits,
-        signals: signals,
-        track_nodes: track_nodes,
-        track_edges: track_edges,
-        switches: switches,
+        track_nodes: create_track_nodes(),
+        track_edges: create_track_edges(),
+        track_circuits: create_track_circuits(),
+        signals: create_signals(),
+        switches: create_switches(),
     }
 }
 
-fn create_track_edges() -> HashMap<TrackEdgeId, TrackEdge> {
-    let track_edges: HashMap<TrackEdgeId, TrackEdge> = HashMap::from([
-        (
-            String::from("E1"),
-            TrackEdge {
-                from: String::from("N1"),
-                to: String::from("N2"),
-                geometry: vec![Point {
-                    x: f64::from(150),
-                    y: f64::from(150),
-                }],
-                properties: TrackProperties {
-                    electrified: false,
-                    speed_limit: 30,
-                },
-                allows_from_to: true,
-                allows_to_from: true,
-            },
-        ),
-        (
-            String::from("E2"),
-            TrackEdge {
-                from: String::from("N1"),
-                to: String::from("N2"),
-                geometry: vec![Point {
-                    x: f64::from(150),
-                    y: f64::from(150),
-                }],
-                properties: TrackProperties {
-                    electrified: false,
-                    speed_limit: 30,
-                },
-                allows_from_to: true,
-                allows_to_from: true,
-            },
-        ),
-    ]);
-
-    return track_edges;
-}
-
-fn create_switches() -> HashMap<SwitchId, Switch> {
-    let switches: HashMap<SwitchId, Switch> = HashMap::from([(
-        String::from("S1"),
-        Switch {
-            common: EdgeEnd {
-                node_id: String::from("N1"),
-                edge_id: String::from("E1"),
-            },
-            normal: EdgeEnd {
-                node_id: String::from("N1"),
-                edge_id: String::from("E2"),
-            },
-            reverse: EdgeEnd {
-                node_id: String::from("N1"),
-                edge_id: String::from("E4"),
-            },
-        },
-    )]);
-
-    return switches;
-}
-
-fn create_track_circuits() -> HashMap<TrackCircuitId, TrackCircuit> {
-    let track_circuits: HashMap<TrackCircuitId, TrackCircuit> = HashMap::from([
-        (
-            String::from("TC1"),
-            TrackCircuit {
-                edges: vec![String::from("E1")],
-            },
-        ),
-        (
-            String::from("TC2"),
-            TrackCircuit {
-                edges: vec![String::from("E2"), String::from("E3")],
-            },
-        ),
-    ]);
-
-    return track_circuits;
-}
-
-fn create_signals() -> HashMap<SignalId, Signal> {
-    let signals: HashMap<SignalId, Signal> = HashMap::from([(
-        String::from("S1"),
-        Signal {
-            approach: EdgeEnd {
-                edge_id: String::from("E1"),
-                node_id: String::from("N1"),
-            },
-        },
-    )]);
-
-    return signals;
-}
-
 fn create_track_nodes() -> HashMap<TrackNodeId, TrackNode> {
-    let track_nodes: HashMap<TrackNodeId, TrackNode> = HashMap::from([
+    HashMap::from([
         (
-            String::from("N1"),
+            "WEST_BOUNDARY".to_owned(),
             TrackNode {
-                position: Point {
-                    x: f64::from(100),
-                    y: f64::from(100),
-                },
-                track_type: Buffer,
-            },
-        ),
-        (
-            String::from("N2"),
-            TrackNode {
-                position: Point {
-                    x: f64::from(200),
-                    y: f64::from(200),
-                },
+                position: Point { x: -400.0, y: 0.0 },
                 track_type: Boundary,
             },
         ),
         (
-            String::from("N3"),
+            "WEST_JUNCTION".to_owned(),
             TrackNode {
-                position: Point {
-                    x: f64::from(300),
-                    y: f64::from(300),
-                },
-                track_type: Buffer,
+                position: Point { x: -220.0, y: 0.0 },
+                track_type: SwitchNode,
             },
         ),
         (
-            String::from("N4"),
+            "EAST_JUNCTION".to_owned(),
             TrackNode {
-                position: Point {
-                    x: f64::from(400),
-                    y: f64::from(400),
-                },
-                track_type: Buffer,
+                position: Point { x: 220.0, y: 0.0 },
+                track_type: SwitchNode,
             },
         ),
-    ]);
+        (
+            "EAST_BOUNDARY".to_owned(),
+            TrackNode {
+                position: Point { x: 400.0, y: 0.0 },
+                track_type: Boundary,
+            },
+        ),
+    ])
+}
 
-    return track_nodes;
+fn create_track_edges() -> HashMap<TrackEdgeId, TrackEdge> {
+    HashMap::from([
+        (
+            "WEST_APPROACH".to_owned(),
+            TrackEdge {
+                from: "WEST_BOUNDARY".to_owned(),
+                to: "WEST_JUNCTION".to_owned(),
+                geometry: vec![Point { x: -400.0, y: 0.0 }, Point { x: -220.0, y: 0.0 }],
+                properties: TrackProperties {
+                    electrified: true,
+                    speed_limit: 60,
+                },
+                allows_from_to: true,
+                allows_to_from: true,
+            },
+        ),
+        (
+            "MAIN_LINE".to_owned(),
+            TrackEdge {
+                from: "WEST_JUNCTION".to_owned(),
+                to: "EAST_JUNCTION".to_owned(),
+                geometry: vec![Point { x: -220.0, y: 0.0 }, Point { x: 220.0, y: 0.0 }],
+                properties: TrackProperties {
+                    electrified: true,
+                    speed_limit: 80,
+                },
+                allows_from_to: true,
+                allows_to_from: true,
+            },
+        ),
+        (
+            "PASSING_LOOP".to_owned(),
+            TrackEdge {
+                from: "WEST_JUNCTION".to_owned(),
+                to: "EAST_JUNCTION".to_owned(),
+                geometry: vec![
+                    Point { x: -220.0, y: 0.0 },
+                    Point {
+                        x: -100.0,
+                        y: 110.0,
+                    },
+                    Point { x: 100.0, y: 110.0 },
+                    Point { x: 220.0, y: 0.0 },
+                ],
+                properties: TrackProperties {
+                    electrified: true,
+                    speed_limit: 40,
+                },
+                allows_from_to: true,
+                allows_to_from: true,
+            },
+        ),
+        (
+            "EAST_APPROACH".to_owned(),
+            TrackEdge {
+                from: "EAST_JUNCTION".to_owned(),
+                to: "EAST_BOUNDARY".to_owned(),
+                geometry: vec![Point { x: 220.0, y: 0.0 }, Point { x: 400.0, y: 0.0 }],
+                properties: TrackProperties {
+                    electrified: true,
+                    speed_limit: 60,
+                },
+                allows_from_to: true,
+                allows_to_from: true,
+            },
+        ),
+    ])
+}
+
+fn create_track_circuits() -> HashMap<TrackCircuitId, TrackCircuit> {
+    HashMap::from([
+        (
+            "TC_WEST_APPROACH".to_owned(),
+            TrackCircuit {
+                edges: vec!["WEST_APPROACH".to_owned()],
+            },
+        ),
+        (
+            "TC_MAIN_LINE".to_owned(),
+            TrackCircuit {
+                edges: vec!["MAIN_LINE".to_owned()],
+            },
+        ),
+        (
+            "TC_PASSING_LOOP".to_owned(),
+            TrackCircuit {
+                edges: vec!["PASSING_LOOP".to_owned()],
+            },
+        ),
+        (
+            "TC_EAST_APPROACH".to_owned(),
+            TrackCircuit {
+                edges: vec!["EAST_APPROACH".to_owned()],
+            },
+        ),
+    ])
+}
+
+fn create_signals() -> HashMap<SignalId, Signal> {
+    HashMap::from([
+        (
+            "SIG_WEST_ENTRY".to_owned(),
+            Signal {
+                approach: EdgeEnd {
+                    node_id: "WEST_JUNCTION".to_owned(),
+                    edge_id: "WEST_APPROACH".to_owned(),
+                },
+            },
+        ),
+        (
+            "SIG_WEST_EXIT".to_owned(),
+            Signal {
+                approach: EdgeEnd {
+                    node_id: "WEST_JUNCTION".to_owned(),
+                    edge_id: "MAIN_LINE".to_owned(),
+                },
+            },
+        ),
+        (
+            "SIG_EAST_EXIT".to_owned(),
+            Signal {
+                approach: EdgeEnd {
+                    node_id: "EAST_JUNCTION".to_owned(),
+                    edge_id: "MAIN_LINE".to_owned(),
+                },
+            },
+        ),
+        (
+            "SIG_EAST_ENTRY".to_owned(),
+            Signal {
+                approach: EdgeEnd {
+                    node_id: "EAST_JUNCTION".to_owned(),
+                    edge_id: "EAST_APPROACH".to_owned(),
+                },
+            },
+        ),
+    ])
+}
+
+fn create_switches() -> HashMap<SwitchId, Switch> {
+    HashMap::from([
+        (
+            "SW_WEST".to_owned(),
+            Switch {
+                common: EdgeEnd {
+                    node_id: "WEST_JUNCTION".to_owned(),
+                    edge_id: "WEST_APPROACH".to_owned(),
+                },
+                normal: EdgeEnd {
+                    node_id: "WEST_JUNCTION".to_owned(),
+                    edge_id: "MAIN_LINE".to_owned(),
+                },
+                reverse: EdgeEnd {
+                    node_id: "WEST_JUNCTION".to_owned(),
+                    edge_id: "PASSING_LOOP".to_owned(),
+                },
+            },
+        ),
+        (
+            "SW_EAST".to_owned(),
+            Switch {
+                common: EdgeEnd {
+                    node_id: "EAST_JUNCTION".to_owned(),
+                    edge_id: "EAST_APPROACH".to_owned(),
+                },
+                normal: EdgeEnd {
+                    node_id: "EAST_JUNCTION".to_owned(),
+                    edge_id: "MAIN_LINE".to_owned(),
+                },
+                reverse: EdgeEnd {
+                    node_id: "EAST_JUNCTION".to_owned(),
+                    edge_id: "PASSING_LOOP".to_owned(),
+                },
+            },
+        ),
+    ])
 }
